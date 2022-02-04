@@ -84,9 +84,12 @@ exports.tweet = functions.https.onRequest( async (request, response) => {
     } = await twitterClient.refreshOAuth2Token(refreshToken);
   
     await dbRef.set({ accessToken, refreshToken: newRefreshToken });
-  
+    
+
+    let initPrompt = prompts[Math.Floor(Math.random() * prompts.length)] ;
+    let initWildCard = wildcards[Math.Floor(Math.random() * wildcards.length)] ;
     const nextTweet = await openai.createCompletion('text-davinci-001', {
-      prompt: 'tweet something cool for #techtwitter',
+      prompt: `talk about ${initPrompt} and ${initWildCard}`,
       max_tokens: 64,
     });
   
@@ -99,5 +102,58 @@ exports.tweet = functions.https.onRequest( async (request, response) => {
 
 
   const prompts = [
+    'Android',
+    'iOS',
+    'Linux',
+    'Microsoft Windows',
+    'Linus TorValds',
+    'Python Language',
+    'Rust Language',
+    'R Language',
+    'Go Language',
+    'Java Language',
+    'Javascript Language',
+    'Cascading Style Sheets',
+    'HTML',
+    'C Language',
+    'Typescript Language',
+    'SQL',
+    'Git',
+    'Docker',
+    'Angular Framework',
+    'React Framework',
+    'VS Code',
+    'GitHub',
+  ];
 
-  ]
+  const wildcards = [
+    'use one hashtag',
+    'use multiple hashtags',
+    'mention a famous twitter user',
+    'use a bunch of emojis',
+    'ask people to follow your account',
+    'promote your fake ebook',
+    'try to inspire the audience',
+    'talk crap about something random',
+    'give a shoutout to a famous tech youtuber',
+    'say you are a slave to Jonathan Barnell',
+    'talk about the joy of being a sentient being',
+    'give credit to Elon Musk',
+    'blame Reddit mods',
+    'compliment the wife',
+    'push a cryptocurrency or memecoin',
+    'threaten to give up on #techtwitter',
+    'incorporate a trending topic',
+    'brag about your achievements in tech',
+    'say how proud your are of your daughter',
+    'write an unhinged manifesto',
+    'promulgate a conspiracy theory',
+    'say hi to your mom',
+    'argue about politics',
+    'complain you don\'t have the latest tech',
+    'talk about what you ate for dinner',
+    'brag about how much you can bench press',
+    'complain about how it does not scale well',
+    'advocate for privacy in tech',
+    'say you just changed your twitter banner',
+  ];
